@@ -75,50 +75,50 @@ td, th {
     border: 1px solid #ccc;
     padding: 6px;
     text-align: center;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
-/* DESCRIPTION ÉNORME */
+/* DESCRIPTION PLUS LARGE */
 th:nth-child(1),
 td:nth-child(1) {
-    width: 46%;
+    width: 34%;
     text-align: left;
 }
 
-/* DATE PETITE */
+/* DATE REMISE NORMALE */
 th:nth-child(2),
 td:nth-child(2) {
-    width: 12%;
+    width: 15%;
 }
 
-/* QTÉ TRÈS PETITE */
+/* QTÉ PLUS PETITE */
 th:nth-child(3),
 td:nth-child(3) {
-    width: 5%;
+    width: 7%;
 }
 
 /* UNITÉ PETITE */
 th:nth-child(4),
 td:nth-child(4) {
-    width: 6%;
+    width: 8%;
 }
 
 /* PRIX */
 th:nth-child(5),
 td:nth-child(5) {
-    width: 11%;
+    width: 12%;
 }
 
 /* TVA */
 th:nth-child(6),
 td:nth-child(6) {
-    width: 7%;
+    width: 9%;
 }
 
 /* MONTANT */
 th:nth-child(7),
 td:nth-child(7) {
-    width: 13%;
+    width: 15%;
 }
 
 /* INPUTS */
@@ -132,19 +132,12 @@ input, textarea {
     font-family: Arial;
 }
 
-/* DESCRIPTION MULTILIGNE */
+/* DESCRIPTION */
 .desc {
-    min-height: 90px;
-    line-height: 20px;
-    white-space: pre-wrap;
-    word-break: break-word;
-    overflow-wrap: break-word;
+    height: 55px;
+    line-height: 18px;
     padding: 4px;
-}
-
-/* INPUTS NUMERIQUES */
-#table input[type="number"] {
-    text-align: center;
+    overflow-wrap: break-word;
 }
 
 /* TOTAL */
@@ -233,6 +226,7 @@ input, textarea {
 </tr>
 
 <tr>
+
     <td>
         <textarea class="desc" placeholder="Description prestation"></textarea>
     </td>
@@ -260,6 +254,7 @@ input, textarea {
     <td class="montant">
         0
     </td>
+
 </tr>
 
 </table>
