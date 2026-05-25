@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Facture</title>
+
+<style>
+body {
+    font-family: Arial;
+    max-width: 900px;
+    margin: auto;
+    padding-bottom: 80px;
+}
+
+/* BOUTON UPLOAD */
+.upload {
+    margin-bottom: 10px;
+}
+
+/* STRUCTURE */
+.top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.right-box {
+    text-align: right;
+}
+
+/* LOGO */
+.logo-box {
+    width: 220px;
+    height: 120px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.logo-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* TITRE */
+.big-title input {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: right;
+    border: none;
+}
+
+/* SECTIONS */
+.section {
+    margin-top: 30px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    table-layout: fixed;
+}
+
+th {
+    background: #eee;
+}
+
+td, th {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* PROPORTIONS COLONNES */
+th:nth-child(1),
+td:nth-child(1) {
+    width: 34%;
+    text-align: left;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 15%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 7%;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+    width: 9%;
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+    width: 13%;
+}
+
+th:nth-child(6),
+td:nth-child(6) {
+    width: 9%;
+}
+
+th:nth-child(7),
+td:nth-child(7) {
+    width: 13%;
+}
+
+/* INPUTS */
+input, textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* DESCRIPTION FACTURE */
+#table td:first-child input {
+    white-space: normal;
+    overflow-wrap: break-word;
+    font-size: 14px;
+    padding: 4px;
+}
+
+/* INPUTS NUMERIQUES PLUS PROPRES */
+#table input[type="number"] {
+    text-align: center;
+}
+
+/* TEXTAREA */
+textarea {
+    height: 45px;
+}
+
+/* TOTAL */
+.total-box {
+    text-align: right;
+    margin-top: 20px;
+}
+
+/* BOUTONS MAIL */
+.btn-left, .btn-right {
+    position: fixed;
+    bottom: 10px;
+    background: #ccc;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+}
+
+.btn-left { left: 10px; }
+.btn-right { right: 10px; }
+
+</style>
+</head>
+
+<body>
+
+<input class="upload" type="file" onchange="loadLogo(event)">
+
+<div id="facture">
+
+<div class="top">
+
+    <div>
+        <div class="logo-box">
+            <img id="logo">
+        </div>
+
+        <textarea placeholder="Nom entreprise"></textarea>
+        <textarea id="emailEntreprise" placeholder="Email entreprise"></textarea>
+    </div>
+
+    <div class="right-box">
+        <div class="big-title">
+            <input value="FACTURE">
+        </div>
+        Numéro : <input value="2026-1"><br>
+        Date : <input type="date"><br>
+        Type : <input value="Prestation de service">
+
+        <div style="margin-top:20px; width:300px; float:right;">
+            <b>Client :</b><br>
+            <textarea placeholder="Nom Prénom"></textarea>
+            <textarea placeholder="Adresse + Code"></textarea>
+            <input placeholder="Téléphone">
+            <input id="emailClient" placeholder="Email">
+        </div>
+    </div>
+
+</div>
+
+<div class="section">
+    <b>Facturation :</b>
+    <input placeholder="Ex: Débouchage">
+</div>
+
+<table id="table">
+<tr>
+    <th>Description</th>
+    <th>Date</th>
+    <th>Qté</th>
+    <th>Unité</th>
+    <th>Prix</th>
+    <th>TVA %</th>
+    <th>Montant</th>
+</tr>
+
+<tr>
+    <td><input placeholder="Description prestation"></td>
+    <td><input type="date"></td>
+    <td><input type="number" value="1" onchange="calc()"></td>
+    <td><input value="h"></td>
+    <td><input type="number" value="0" onchange="calc()"></td>
+    <td><input type="number" value="20" onchange="calc()"></td>
+    <td class="montant">0</td>
+</tr>
+</table>
+
+<button onclick="addRow()">➕ Ligne</button>
+
+<div class="total-box">
+    Total HT : <span id="ht">0</span> €<br>
+    TVA : <span id="tva">0</span> €<br>
+    <b>Total TTC : <span id="ttc">0</span> €</b>
+</div>
+
+<div class="section">
+    <b>Conditions de paiement :</b><br>
+    <input value="14 jours"><br><br>
+
+    <b>Code service :</b><br>
+    <input value="Résidence">
+</div>
+
+</div>
+
+<button class="btn-left" onclick="envoyerEntreprise()">Envoyer entreprise</button>
+<button class="btn-right" onclick="envoyerClient()">Envoyer client</button>
+
+<script>
+function loadLogo(e) {
+    document.getElementById("logo").src = URL.createObjectURL(e.target.files[0]);
+}
+
+function addRow() {
+    let table = document.getElementById("table");
+    let row = table.insertRow();
+
+    row.innerHTML = `
+    <td><input placeholder="Description prestation"></td>
+    <td><input type="date"></td>
+    <td><input type="number" value="1" onchange="calc()"></td>
+    <td><input value="h"></td>
+    <td><input type="number" value="0" onchange="calc()"></td>
+    <td><input type="number" value="20" onchange="calc()"></td>
+    <td class="montant">0</td>
+    `;
+}
+
+function calc() {
+    let rows = document.querySelectorAll("#table tr");
+    let totalHT = 0;
+    let totalTVA = 0;
+
+    rows.forEach((row, i) => {
+        if(i === 0) return;
+
+        let qte = parseFloat(row.cells[2].querySelector("input").value) || 0;
+        let prix = parseFloat(row.cells[4].querySelector("input").value) || 0;
+        let tva = parseFloat(row.cells[5].querySelector("input").value) || 0;
+
+        let ht = qte * prix;
+        let tvaAmount = ht * (tva / 100);
+        let ttc = ht + tvaAmount;
+
+        row.cells[6].innerText = ttc.toFixed(2);
+
+        totalHT += ht;
+        totalTVA += tvaAmount;
+    });
+
+    document.getElementById("ht").innerText = totalHT.toFixed(2);
+    document.getElementById("tva").innerText = totalTVA.toFixed(2);
+    document.getElementById("ttc").innerText = (totalHT + totalTVA).toFixed(2);
+}
+
+function envoyerEntreprise() {
+    let email = document.getElementById("emailEntreprise").value;
+    window.location.href = "mailto:" + email;
+}
+
+function envoyerClient() {
+    let email = document.getElementById("emailClient").value;
+    window.location.href = "mailto:" + email;
+}
+
+calc();
+</script>
+
+</body>
+</html>
