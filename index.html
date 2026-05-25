@@ -73,43 +73,49 @@ th {
 
 td, th {
     border: 1px solid #ccc;
-    padding: 8px;
+    padding: 6px;
     text-align: center;
-    overflow: hidden;
+    vertical-align: top;
 }
 
-/* PROPORTIONS COLONNES */
+/* DESCRIPTION ÉNORME */
 th:nth-child(1),
 td:nth-child(1) {
-    width: 34%;
+    width: 46%;
     text-align: left;
 }
 
+/* DATE PETITE */
 th:nth-child(2),
 td:nth-child(2) {
-    width: 15%;
+    width: 12%;
 }
 
+/* QTÉ TRÈS PETITE */
 th:nth-child(3),
 td:nth-child(3) {
+    width: 5%;
+}
+
+/* UNITÉ PETITE */
+th:nth-child(4),
+td:nth-child(4) {
+    width: 6%;
+}
+
+/* PRIX */
+th:nth-child(5),
+td:nth-child(5) {
+    width: 11%;
+}
+
+/* TVA */
+th:nth-child(6),
+td:nth-child(6) {
     width: 7%;
 }
 
-th:nth-child(4),
-td:nth-child(4) {
-    width: 9%;
-}
-
-th:nth-child(5),
-td:nth-child(5) {
-    width: 13%;
-}
-
-th:nth-child(6),
-td:nth-child(6) {
-    width: 9%;
-}
-
+/* MONTANT */
 th:nth-child(7),
 td:nth-child(7) {
     width: 13%;
@@ -121,25 +127,24 @@ input, textarea {
     border: none;
     resize: none;
     box-sizing: border-box;
+    background: transparent;
     font-size: 14px;
+    font-family: Arial;
 }
 
-/* DESCRIPTION FACTURE */
-#table td:first-child input {
-    white-space: normal;
+/* DESCRIPTION MULTILIGNE */
+.desc {
+    min-height: 90px;
+    line-height: 20px;
+    white-space: pre-wrap;
+    word-break: break-word;
     overflow-wrap: break-word;
-    font-size: 14px;
     padding: 4px;
 }
 
-/* INPUTS NUMERIQUES PLUS PROPRES */
+/* INPUTS NUMERIQUES */
 #table input[type="number"] {
     text-align: center;
-}
-
-/* TEXTAREA */
-textarea {
-    height: 45px;
 }
 
 /* TOTAL */
@@ -158,8 +163,13 @@ textarea {
     cursor: pointer;
 }
 
-.btn-left { left: 10px; }
-.btn-right { right: 10px; }
+.btn-left {
+    left: 10px;
+}
+
+.btn-right {
+    right: 10px;
+}
 
 </style>
 </head>
@@ -182,20 +192,25 @@ textarea {
     </div>
 
     <div class="right-box">
+
         <div class="big-title">
             <input value="FACTURE">
         </div>
+
         Numéro : <input value="2026-1"><br>
         Date : <input type="date"><br>
         Type : <input value="Prestation de service">
 
         <div style="margin-top:20px; width:300px; float:right;">
             <b>Client :</b><br>
+
             <textarea placeholder="Nom Prénom"></textarea>
             <textarea placeholder="Adresse + Code"></textarea>
+
             <input placeholder="Téléphone">
             <input id="emailClient" placeholder="Email">
         </div>
+
     </div>
 
 </div>
@@ -206,6 +221,7 @@ textarea {
 </div>
 
 <table id="table">
+
 <tr>
     <th>Description</th>
     <th>Date</th>
@@ -217,14 +233,35 @@ textarea {
 </tr>
 
 <tr>
-    <td><input placeholder="Description prestation"></td>
-    <td><input type="date"></td>
-    <td><input type="number" value="1" onchange="calc()"></td>
-    <td><input value="h"></td>
-    <td><input type="number" value="0" onchange="calc()"></td>
-    <td><input type="number" value="20" onchange="calc()"></td>
-    <td class="montant">0</td>
+    <td>
+        <textarea class="desc" placeholder="Description prestation"></textarea>
+    </td>
+
+    <td>
+        <input type="date">
+    </td>
+
+    <td>
+        <input type="number" value="1" onchange="calc()">
+    </td>
+
+    <td>
+        <input value="h">
+    </td>
+
+    <td>
+        <input type="number" value="0" onchange="calc()">
+    </td>
+
+    <td>
+        <input type="number" value="20" onchange="calc()">
+    </td>
+
+    <td class="montant">
+        0
+    </td>
 </tr>
+
 </table>
 
 <button onclick="addRow()">➕ Ligne</button>
@@ -236,76 +273,147 @@ textarea {
 </div>
 
 <div class="section">
+
     <b>Conditions de paiement :</b><br>
     <input value="14 jours"><br><br>
 
     <b>Code service :</b><br>
     <input value="Résidence">
-</div>
 
 </div>
 
-<button class="btn-left" onclick="envoyerEntreprise()">Envoyer entreprise</button>
-<button class="btn-right" onclick="envoyerClient()">Envoyer client</button>
+</div>
+
+<button class="btn-left" onclick="envoyerEntreprise()">
+    Envoyer entreprise
+</button>
+
+<button class="btn-right" onclick="envoyerClient()">
+    Envoyer client
+</button>
 
 <script>
+
 function loadLogo(e) {
-    document.getElementById("logo").src = URL.createObjectURL(e.target.files[0]);
+    document.getElementById("logo").src =
+    URL.createObjectURL(e.target.files[0]);
 }
 
 function addRow() {
+
     let table = document.getElementById("table");
+
     let row = table.insertRow();
 
     row.innerHTML = `
-    <td><input placeholder="Description prestation"></td>
-    <td><input type="date"></td>
-    <td><input type="number" value="1" onchange="calc()"></td>
-    <td><input value="h"></td>
-    <td><input type="number" value="0" onchange="calc()"></td>
-    <td><input type="number" value="20" onchange="calc()"></td>
-    <td class="montant">0</td>
+
+    <td>
+        <textarea class="desc" placeholder="Description prestation"></textarea>
+    </td>
+
+    <td>
+        <input type="date">
+    </td>
+
+    <td>
+        <input type="number" value="1" onchange="calc()">
+    </td>
+
+    <td>
+        <input value="h">
+    </td>
+
+    <td>
+        <input type="number" value="0" onchange="calc()">
+    </td>
+
+    <td>
+        <input type="number" value="20" onchange="calc()">
+    </td>
+
+    <td class="montant">
+        0
+    </td>
+
     `;
 }
 
 function calc() {
-    let rows = document.querySelectorAll("#table tr");
+
+    let rows =
+    document.querySelectorAll("#table tr");
+
     let totalHT = 0;
     let totalTVA = 0;
 
     rows.forEach((row, i) => {
+
         if(i === 0) return;
 
-        let qte = parseFloat(row.cells[2].querySelector("input").value) || 0;
-        let prix = parseFloat(row.cells[4].querySelector("input").value) || 0;
-        let tva = parseFloat(row.cells[5].querySelector("input").value) || 0;
+        let qte =
+        parseFloat(
+        row.cells[2]
+        .querySelector("input").value
+        ) || 0;
+
+        let prix =
+        parseFloat(
+        row.cells[4]
+        .querySelector("input").value
+        ) || 0;
+
+        let tva =
+        parseFloat(
+        row.cells[5]
+        .querySelector("input").value
+        ) || 0;
 
         let ht = qte * prix;
-        let tvaAmount = ht * (tva / 100);
-        let ttc = ht + tvaAmount;
 
-        row.cells[6].innerText = ttc.toFixed(2);
+        let tvaAmount =
+        ht * (tva / 100);
+
+        let ttc =
+        ht + tvaAmount;
+
+        row.cells[6].innerText =
+        ttc.toFixed(2);
 
         totalHT += ht;
         totalTVA += tvaAmount;
     });
 
-    document.getElementById("ht").innerText = totalHT.toFixed(2);
-    document.getElementById("tva").innerText = totalTVA.toFixed(2);
-    document.getElementById("ttc").innerText = (totalHT + totalTVA).toFixed(2);
+    document.getElementById("ht")
+    .innerText = totalHT.toFixed(2);
+
+    document.getElementById("tva")
+    .innerText = totalTVA.toFixed(2);
+
+    document.getElementById("ttc")
+    .innerText =
+    (totalHT + totalTVA).toFixed(2);
 }
 
 function envoyerEntreprise() {
-    let email = document.getElementById("emailEntreprise").value;
-    window.location.href = "mailto:" + email;
+
+    let email =
+    document.getElementById("emailEntreprise").value;
+
+    window.location.href =
+    "mailto:" + email;
 }
 
 function envoyerClient() {
-    let email = document.getElementById("emailClient").value;
-    window.location.href = "mailto:" + email;
+
+    let email =
+    document.getElementById("emailClient").value;
+
+    window.location.href =
+    "mailto:" + email;
 }
 
 calc();
+
 </script>
 
 </body>
